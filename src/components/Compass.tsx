@@ -68,7 +68,6 @@ const Compass = () => {
             return;
           }
         }
-
         // 次にdeviceorientationの許可をリクエスト
         const orientationEvent = window.DeviceOrientationEvent;
         if (orientationEvent && "requestPermission" in orientationEvent) {
