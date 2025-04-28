@@ -25,6 +25,7 @@ const Compass = () => {
   const [webkitHeading, setWebkitHeading] = useState<number>(0);
   const [isRequestingPermission, setIsRequestingPermission] = useState<boolean>(false);
   const [permissionDenied, setPermissionDenied] = useState<boolean>(false);
+  const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
 
   const requestPermission = async () => {
     if (!window.DeviceOrientationEvent?.requestPermission) {
@@ -37,6 +38,7 @@ const Compass = () => {
       const permission = await window.DeviceOrientationEvent.requestPermission();
       if (permission === "granted") {
         setPermissionDenied(false);
+        setPermissionGranted(true);
         window.addEventListener("deviceorientation", handleOrientation);
       } else {
         setPermissionDenied(true);
@@ -64,6 +66,7 @@ const Compass = () => {
     // その他のデバイスの場合、直接イベントリスナーを設定
     if (window.DeviceOrientationEvent) {
       window.addEventListener("deviceorientation", handleOrientation);
+      setPermissionGranted(true);
     } else {
       setError("デバイスの方位センサーが利用できません");
     }
@@ -111,7 +114,7 @@ const Compass = () => {
     }
   };
 
-  if (window.DeviceOrientationEvent?.requestPermission) {
+  if (window.DeviceOrientationEvent?.requestPermission && !permissionGranted) {
     return (
       <div className="compass-container">
         {permissionDenied ? (
