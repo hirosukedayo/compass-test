@@ -24,6 +24,12 @@
   margin: 5px 0;
 }
 
+.tilt-warning {
+  color: #ff4444;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
 .compass {
   position: relative;
   width: min(80vw, 80vh, 300px);

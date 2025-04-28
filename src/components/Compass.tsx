@@ -17,6 +17,7 @@ declare global {
 const Compass = () => {
   const [heading, setHeading] = useState<number>(0);
   const [error, setError] = useState<string>("");
+  const [tilt, setTilt] = useState<string>("");
 
   useEffect(() => {
     if (window.DeviceOrientationEvent) {
@@ -31,9 +32,22 @@ const Compass = () => {
   }, []);
 
   const handleOrientation = (event: DeviceOrientationEvent) => {
-    if (event.alpha !== null) {
-      // alpha値は0度が北を指し、時計回りに増加
-      setHeading(event.alpha);
+    if (event.alpha !== null && event.beta !== null && event.gamma !== null) {
+      // デバイスの傾きを計算（度）
+      const beta = event.beta; // 前後の傾き
+      const gamma = event.gamma; // 左右の傾き
+
+      // 傾きが大きすぎる場合は警告を表示
+      if (Math.abs(beta) > 30 || Math.abs(gamma) > 30) {
+        setTilt("デバイスを水平に保ってください");
+      } else {
+        setTilt("");
+      }
+
+      // 傾きを考慮した方位角の計算
+      const alpha = event.alpha;
+      const heading = alpha;
+      setHeading(heading);
     }
   };
 
@@ -46,6 +60,7 @@ const Compass = () => {
           <div className="compass-info">
             <p>赤い矢印：現在の向き</p>
             <p>N, E, S, W：方角</p>
+            {tilt && <p className="tilt-warning">{tilt}</p>}
           </div>
           <div className="compass" style={{ transform: `rotate(${heading}deg)` }}>
             <div className="compass-arrow">↑</div>
