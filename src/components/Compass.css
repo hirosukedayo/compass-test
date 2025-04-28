@@ -113,35 +113,42 @@
 .permission-request {
   text-align: center;
   padding: 20px;
-  background-color: #fff;
+  background-color: #333333;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   max-width: 80%;
   margin: 0 auto;
+  color: #ffffff;
 }
 
 .permission-button {
-  background-color: #4caf50;
+  background-color: transparent;
   color: white;
   padding: 12px 24px;
-  border: none;
+  border: 2px solid #ffffff;
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
   margin-top: 16px;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
 }
 
 .permission-button:hover {
-  background-color: #45a049;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.permission-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .ios-instructions {
   margin-top: 20px;
   text-align: left;
-  background-color: #f8f8f8;
+  background-color: rgba(255, 255, 255, 0.1);
   padding: 15px;
   border-radius: 8px;
+  color: #ffffff;
 }
 
 .ios-instructions ol {
@@ -162,14 +169,15 @@
 .permission-denied {
   margin-top: 20px;
   padding: 15px;
-  background-color: #fff;
+  background-color: #333333;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
 }
 
 .permission-denied p {
   margin-bottom: 10px;
-  color: #d32f2f;
+  color: #ff4444;
 }
 
 .permission-denied ol {
@@ -179,7 +187,7 @@
 
 .permission-denied li {
   margin: 5px 0;
-  color: #666;
+  color: #ffffff;
 }
 
 .button-group {
@@ -190,9 +198,4 @@
 
 .button-group .permission-button {
   flex: 1;
-  background-color: #1976d2;
-}
-
-.button-group .permission-button:hover {
-  background-color: #1565c0;
 }
