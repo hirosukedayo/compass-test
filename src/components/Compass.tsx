@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Compass.css";
 
 // グローバルな型定義を拡張
@@ -17,6 +17,7 @@ declare global {
 const Compass = () => {
   const [heading, setHeading] = useState<number>(0);
   const [error, setError] = useState<string>("");
+  const initialHeading = useRef<number | null>(null);
 
   useEffect(() => {
     if (window.DeviceOrientationEvent) {
@@ -32,7 +33,14 @@ const Compass = () => {
 
   const handleOrientation = (event: DeviceOrientationEvent) => {
     if (event.alpha !== null) {
-      setHeading(event.alpha);
+      // 初期位置を記録
+      if (initialHeading.current === null) {
+        initialHeading.current = event.alpha;
+      }
+
+      // 初期位置からの相対的な角度を計算
+      const relativeHeading = event.alpha - (initialHeading.current || 0);
+      setHeading(relativeHeading);
     }
   };
 
