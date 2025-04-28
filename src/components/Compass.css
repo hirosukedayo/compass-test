@@ -1,10 +1,22 @@
 .compass-container {
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   background-color: #f5f5f5;
+}
+
+.compass-info {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.compass-info p {
+  margin: 5px 0;
 }
 
 .compass {
@@ -18,11 +30,12 @@
 
 .compass-arrow {
   position: absolute;
-  top: 10px;
+  top: 5px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 24px;
+  font-size: 32px;
   color: red;
+  z-index: 2;
 }
 
 .compass-directions {
@@ -35,28 +48,29 @@
   position: absolute;
   font-size: 16px;
   font-weight: bold;
+  z-index: 1;
 }
 
 .north {
-  top: 10px;
+  top: 15px;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .east {
-  right: 10px;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .south {
-  bottom: 10px;
+  bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .west {
-  left: 10px;
+  left: 15px;
   top: 50%;
   transform: translateY(-50%);
 }

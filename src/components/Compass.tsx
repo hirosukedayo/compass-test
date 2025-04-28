@@ -42,6 +42,10 @@ const Compass = () => {
         <div className="error-message">{error}</div>
       ) : (
         <>
+          <div className="compass-info">
+            <p>赤い矢印：現在の向き</p>
+            <p>N, E, S, W：方角</p>
+          </div>
           <div className="compass" style={{ transform: `rotate(${heading}deg)` }}>
             <div className="compass-arrow">↑</div>
             <div className="compass-directions">
