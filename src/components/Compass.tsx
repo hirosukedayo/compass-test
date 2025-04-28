@@ -44,7 +44,8 @@ const Compass = () => {
       if ("webkitCompassHeading" in event && event.webkitCompassHeading !== null) {
         const webkitHeading = event.webkitCompassHeading;
         setWebkitHeading(webkitHeading);
-        setHeading(webkitHeading);
+        // 時計回りに増加する値を反時計回りに変換
+        setHeading(360 - webkitHeading);
       } else {
         // その他のデバイスの場合、gammaを考慮した方位角の計算
         const gammaRad = (gamma * Math.PI) / 180; // ラジアンに変換
