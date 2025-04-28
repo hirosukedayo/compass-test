@@ -166,7 +166,6 @@ const Compass = () => {
       ) : (
         <>
           <div className="compass-info">
-            <p>赤い矢印：現在の向き</p>
             <p>N, E, S, W：方角</p>
             {tilt && <p className="tilt-warning">{tilt}</p>}
             <p>方位角（alpha）: {Math.round(alpha)}°</p>
