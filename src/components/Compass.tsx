@@ -3,14 +3,8 @@ import "./Compass.css";
 
 // グローバルな型定義を拡張
 declare global {
-  interface Window {
-    MSStream?: unknown;
-    DeviceMotionEvent: {
-      requestPermission?: () => Promise<"granted" | "denied">;
-    };
-    DeviceOrientationEvent: {
-      requestPermission?: () => Promise<"granted" | "denied">;
-    };
+  interface DeviceOrientationEvent {
+    webkitCompassHeading: number | null;
   }
 }
 
@@ -21,6 +15,7 @@ const Compass = () => {
   const [gamma, setGamma] = useState<number>(0);
   const [beta, setBeta] = useState<number>(0);
   const [alpha, setAlpha] = useState<number>(0);
+  const [webkitHeading, setWebkitHeading] = useState<number>(0);
 
   useEffect(() => {
     if (window.DeviceOrientationEvent) {
@@ -45,25 +40,29 @@ const Compass = () => {
       setGamma(gamma);
       setAlpha(alpha);
 
+      // iOSデバイスの場合、webkitCompassHeadingを使用
+      if ("webkitCompassHeading" in event && event.webkitCompassHeading !== null) {
+        const webkitHeading = event.webkitCompassHeading;
+        setWebkitHeading(webkitHeading);
+        setHeading(webkitHeading);
+      } else {
+        // その他のデバイスの場合、gammaを考慮した方位角の計算
+        const gammaRad = (gamma * Math.PI) / 180; // ラジアンに変換
+        const alphaRad = (alpha * Math.PI) / 180; // ラジアンに変換
+
+        const correctedHeading =
+          Math.atan2(Math.sin(alphaRad) * Math.cos(gammaRad), Math.cos(alphaRad)) * (180 / Math.PI);
+
+        const normalizedHeading = (correctedHeading + 360) % 360;
+        setHeading(normalizedHeading);
+      }
+
       // 傾きが大きすぎる場合は警告を表示
       if (Math.abs(beta) > 30 || Math.abs(gamma) > 30) {
         setTilt("デバイスを水平に保ってください");
       } else {
         setTilt("");
       }
-
-      // gammaを考慮した方位角の計算
-      // gammaが正の場合は右に傾いている、負の場合は左に傾いている
-      const gammaRad = (gamma * Math.PI) / 180; // ラジアンに変換
-      const alphaRad = (alpha * Math.PI) / 180; // ラジアンに変換
-
-      // 傾きを考慮した方位角を計算
-      const correctedHeading =
-        Math.atan2(Math.sin(alphaRad) * Math.cos(gammaRad), Math.cos(alphaRad)) * (180 / Math.PI);
-
-      // 0-360度の範囲に正規化
-      const normalizedHeading = (correctedHeading + 360) % 360;
-      setHeading(normalizedHeading);
     }
   };
 
@@ -80,6 +79,9 @@ const Compass = () => {
             <p>方位角（alpha）: {Math.round(alpha)}°</p>
             <p>前後の傾き（beta）: {Math.round(beta)}°</p>
             <p>左右の傾き（gamma）: {Math.round(gamma)}°</p>
+            {"webkitCompassHeading" in window.DeviceOrientationEvent && (
+              <p>iOS方位角（webkit）: {Math.round(webkitHeading)}°</p>
+            )}
           </div>
           <div className="compass" style={{ transform: `rotate(${heading}deg)` }}>
             <div className="compass-arrow">↑</div>
