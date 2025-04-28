@@ -20,6 +20,7 @@ const Compass = () => {
   const [tilt, setTilt] = useState<string>("");
   const [gamma, setGamma] = useState<number>(0);
   const [beta, setBeta] = useState<number>(0);
+  const [alpha, setAlpha] = useState<number>(0);
 
   useEffect(() => {
     if (window.DeviceOrientationEvent) {
@@ -38,9 +39,11 @@ const Compass = () => {
       // デバイスの傾きを計算（度）
       const beta = event.beta; // 前後の傾き
       const gamma = event.gamma; // 左右の傾き
+      const alpha = event.alpha; // 方位角
 
       setBeta(beta);
       setGamma(gamma);
+      setAlpha(alpha);
 
       // 傾きが大きすぎる場合は警告を表示
       if (Math.abs(beta) > 30 || Math.abs(gamma) > 30) {
@@ -52,7 +55,7 @@ const Compass = () => {
       // gammaを考慮した方位角の計算
       // gammaが正の場合は右に傾いている、負の場合は左に傾いている
       const gammaRad = (gamma * Math.PI) / 180; // ラジアンに変換
-      const alphaRad = (event.alpha * Math.PI) / 180; // ラジアンに変換
+      const alphaRad = (alpha * Math.PI) / 180; // ラジアンに変換
 
       // 傾きを考慮した方位角を計算
       const correctedHeading =
@@ -74,6 +77,7 @@ const Compass = () => {
             <p>赤い矢印：現在の向き</p>
             <p>N, E, S, W：方角</p>
             {tilt && <p className="tilt-warning">{tilt}</p>}
+            <p>方位角（alpha）: {Math.round(alpha)}°</p>
             <p>前後の傾き（beta）: {Math.round(beta)}°</p>
             <p>左右の傾き（gamma）: {Math.round(gamma)}°</p>
           </div>
