@@ -42,7 +42,7 @@ const Compass = () => {
         <div className="error-message">{error}</div>
       ) : (
         <>
-          <div className="compass" style={{ transform: `rotate(${-heading}deg)` }}>
+          <div className="compass" style={{ transform: `rotate(${heading}deg)` }}>
             <div className="compass-arrow">↑</div>
             <div className="compass-directions">
               <span className="north">N</span>
